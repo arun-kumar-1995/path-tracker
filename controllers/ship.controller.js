@@ -54,6 +54,6 @@ export const createShipment = async (req, res, next) => {
   }
 };
 
-export const getShipDetails = async () => {
-    
+export const getShipmentDetails = async () => {
+
 };
