@@ -20,32 +20,40 @@ export const onBoardShip = async (req, res, next) => {
 };
 
 export const createShipment = async (req, res, next) => {
-  const {
-    startCoordinate,
-    endCoordinate,
-    shipmentStatus = "assigned",
-    shipId,
-  } = req.body;
+  try {
+    const {
+      startCoordinate,
+      endCoordinate,
+      shipmentStatus = "assigned",
+      shipId,
+    } = req.body;
 
-  if (!startCoordinate || !endCoordinate)
-    return ErrorHandler(res, 400, "Provide start and end coordinates");
+    if (!startCoordinate || !endCoordinate)
+      return ErrorHandler(res, 400, "Provide start and end coordinates");
 
-  const ship = await Ship.findById(shipId).lena();
-  if (!ship) return ErrorHandler(res, 400, "Ship not found");
+    const ship = await Ship.findById(shipId).lena();
+    if (!ship) return ErrorHandler(res, 400, "Ship not found");
 
-  const shipment = await Shipment.create({
-    shipId: ship._id,
-    "startCoordinate.coordinates": startCoordinate,
-    "endCoordinate.coordinates": endCoordinate,
-    shipmentStatus,
-  });
+    const shipment = await Shipment.create({
+      shipId: ship._id,
+      "startCoordinate.coordinates": startCoordinate,
+      "endCoordinate.coordinates": endCoordinate,
+      shipmentStatus,
+    });
 
-  await Ship.findById(
-    shipId,
-    { $addToSet: { shipments: shipment._id } },
-    { new: true, upsert: true }
-  );
+    await Ship.findById(
+      shipId,
+      { $addToSet: { shipments: shipment._id } },
+      { new: true, upsert: true }
+    );
 
-  // return response
-  return SendResponse(res, 201, `Shipment assigned for ${ship.shipName}`);
+    // return response
+    return SendResponse(res, 201, `Shipment assigned for ${ship.shipName}`);
+  } catch (err) {
+    next(err);
+  }
+};
+
+export const getShipDetails = async () => {
+    
 };
