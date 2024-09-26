@@ -1,6 +1,7 @@
 import http from "http";
 import app from "./app.js";
 import connectDB from "./configs/db.config.js";
+import InitializeSocketConnection from "./sockets/index.js";
 
 const { PORT: port = 8000 } = process.env;
 
@@ -8,8 +9,11 @@ const startServer = async () => {
   try {
     // connect to db
     await connectDB();
-
-    app.listen(port, () => {
+    // create server
+    const expressServer = http.createServer(app);
+    const io = InitializeSocketConnection(expressServer);
+    // listen for the server
+    expressServer.listen(port, () => {
       console.log(`Server is running on http://localhost:${port}`);
     });
   } catch (err) {
