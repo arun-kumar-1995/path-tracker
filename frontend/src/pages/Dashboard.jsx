@@ -1,9 +1,21 @@
 import React, { useState } from "react";
 import "./dashboard.css";
+import { post } from "../services/api";
 
 const Dashboard = () => {
   // State to manage which form is visible
   const [activeForm, setActiveForm] = useState("onboard");
+  const [shipName, setShipName] = useState("");
+
+  const handleOnboard = async (e) => {
+    e.preventDefault();
+    try {
+      const response = await post("/onboard-ship", { shipName });
+      console.log("Ship Created:", response.data);
+    } catch (error) {
+      console.error("Error creating ship:", error.message);
+    }
+  };
 
   return (
     <div>
@@ -13,14 +25,18 @@ const Dashboard = () => {
             {/* Buttons to toggle forms */}
             <button
               type="button"
-              className={`option ${activeForm === "onboard" ? "active-option" : ""}`}
+              className={`option ${
+                activeForm === "onboard" ? "active-option" : ""
+              }`}
               onClick={() => setActiveForm("onboard")}
             >
               OnBoard ship
             </button>
             <button
               type="button"
-              className={`option ${activeForm === "assign" ? "active-option" : ""}`}
+              className={`option ${
+                activeForm === "assign" ? "active-option" : ""
+              }`}
               onClick={() => setActiveForm("assign")}
             >
               Assign Shipment
@@ -31,12 +47,14 @@ const Dashboard = () => {
           {activeForm === "onboard" && (
             <section className="onboard-ship">
               <label htmlFor="shipName">Enter ship name</label>
-              <form action="">
+              <form onSubmit={handleOnboard}>
                 <input
                   type="text"
                   placeholder="Enter ship name"
                   required
                   autoComplete="off"
+                  name="shipName"
+                  onChange={(e) => setShipName(e.target.value)}
                 />
                 <button type="submit">Submit</button>
               </form>
@@ -45,7 +63,7 @@ const Dashboard = () => {
 
           {activeForm === "assign" && (
             <section className="assign-shipment">
-              <form action="">
+              <form action="/create-shipment" method="POST">
                 <label htmlFor="shipName">Ship Name</label>
                 <input type="text" placeholder="Enter ship name" />
 

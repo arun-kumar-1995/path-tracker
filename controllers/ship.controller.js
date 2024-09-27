@@ -1,11 +1,12 @@
-import Ship from "../models/ship.models";
-import Shipment from "../models/shipment.models";
-import ErrorHandler from "../utils/error.handler";
-import SendResponse from "../utils/responseHandler";
+import Ship from "../models/ship.models.js";
+import Shipment from "../models/shipment.models.js";
+import ErrorHandler from "../utils/error.handler.js";
+import SendResponse from "../utils/responseHandler.js";
 
 export const onBoardShip = async (req, res, next) => {
   try {
     const { shipName } = req.body;
+    console.log(shipName);
     const ship = await Ship.findOne({ shipName }).lean();
     if (ship)
       return ErrorHandler(res, 409, `Ship {shipName} already onboarded`);

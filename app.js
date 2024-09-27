@@ -1,3 +1,6 @@
+import dotenv from "dotenv";
+dotenv.config();
+
 import express from "express";
 const app = express();
 import cors from "cors";
@@ -12,4 +15,8 @@ const corsOptions = {
 
 app.use(cors(corsOptions));
 
+import appRoute from "./routes/index.js";
+
+// define route
+app.use("/", appRoute);
 export default app;
