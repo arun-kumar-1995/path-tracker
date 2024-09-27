@@ -1,13 +1,110 @@
-body {
+:root {
+  /* page setup */
+  --min-height: 100vh;
+  --min-width: 320px;
+  --max-width: 100%;
+  /* font-size */
+  --base-size: 10px;
+  /* margin and padding */
+  --mg-04: 0.4em;
+  --mg-08: 0.8em;
+  --mg-1-2: 1.2em;
+  --mg-1-6: 1.6em;
+  --mg-2: 2em;
+  --mg-3: 3em;
+  --pd-04: 0.4rem;
+  --pd-08: 0.8rem;
+  --pd-1-2: 1.2rem;
+  --pd-1-6: 1.6rem;
+  --pd-2: 2rem;
+  --pd-3: 3rem;
+  /* font-weight */
+  --font-wt-400: 400;
+  --font-wt-500: 500;
+  --font-wt-600: 600;
+  --font-wt-700: 700;
+  --font-wt-800: 800;
+}
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+* {
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+  padding: 0;
+}
+html {
+  scroll-behavior: smooth;
+  font-family: "open sans", sans-serif;
+  font-size: var(--base-size);
+}
+button,
+input {
+  font-family: inherit;
+  background: transparent;
+  border: none;
+  outline: none;
+}
+button:hover {
+  cursor: pointer;
+}
+body {
+  width: var(--max-width);
+  min-height: var(--min-height);
+  font-weight: var(--font-wt-400);
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+#home {
+  background-image: linear-gradient(
+      135deg,
+      rgba(0, 0, 0, 0.4),
+      rgba(0, 0, 0, 0.4)
+    ),
+    url("../public/assets/alpha.jpg");
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center center;
+  width: 100%;
+  height: var(--min-height);
+  position: relative;
+}
+
+main.content-wrapper {
+  text-align: center;
+  position: absolute;
+  top: 60%;
+  left: 50%;
+  transform: translate(-50%, -60%);
+}
+main.content-wrapper h1 {
+  font-size: 1.8rem;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  color: #dfa70d;
+}
+.search {
+  padding: var(--pd-1-2);
+  margin-top: var(--mg-3);
+}
+form.track-form {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--pd-04);
+  min-width: 320px;
+  margin: 0 auto;
+  background-color: #f1f1f1;
+}
+form input {
+  padding: var(--pd-1-2) var(--pd-1-6);
+  font-size: 1.4rem;
+  width: 100%;
+  letter-spacing: 0.5px;
+}
+form button.btn-search {
+  padding: var(--pd-08);
+}
+form input:focus {
+  outline: none;
 }

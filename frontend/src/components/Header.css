@@ -1,0 +1,32 @@
+/* HEADER */
+header {
+  padding: 1rem 2%;
+  background-color: antiquewhite;
+  /* background: linear-gradient(135deg, #74ebd5 0%, #acb6e5 100%); */
+  background-color: #fafafa;
+  width: 100%;
+}
+header .brand-logo {
+  font-size: 2.4rem;
+  font-weight: var(--font-wt-600);
+  border-radius: 50%;
+  border: 1px solid;
+  display: inline-block;
+  padding: var(--pd-04);
+  width: 4.2rem;
+  height: 4.2rem;
+  text-align: center;
+  line-height: 3.2rem;
+  cursor: pointer;
+  text-decoration: none;
+}
+header a.btn-dashboard {
+  text-decoration: none;
+  font-size: 1.4rem;
+  color: #111;
+  float: right;
+  line-height: 4rem;
+  color: #dfa70d;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
