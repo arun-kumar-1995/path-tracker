@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./dashboard.css";
 import api from "../services/api";
 import { toast, Toaster } from "react-hot-toast";
@@ -11,6 +11,8 @@ const Dashboard = () => {
   const [startLongitude, setStartLongitude] = useState("");
   const [endLatitude, setEndLatitude] = useState("");
   const [endLongitude, setEndLongitude] = useState("");
+  const [ships, setShips] = useState([]);
+  const [selectedShipId, setSelectedShipId] = useState("");
 
   const handleOnboard = async (e) => {
     e.preventDefault();
@@ -28,7 +30,7 @@ const Dashboard = () => {
       e.preventDefault();
 
       const shipmentData = {
-        shipId: "66f6a89899abb53291206b8a",
+        shipId: selectedShipId,
         startCoordinate: [
           parseFloat(startLatitude),
           parseFloat(startLongitude),
@@ -36,7 +38,7 @@ const Dashboard = () => {
         endCoordinate: [parseFloat(endLatitude), parseFloat(endLongitude)],
       };
       const response = await api.post("/create-shipment", { ...shipmentData });
-      console.log(response);
+
       toast.success(response.data.message);
       // Clear form fields upon success
       setShipName("");
@@ -48,6 +50,22 @@ const Dashboard = () => {
       toast.error(error.response.data.message);
     }
   };
+
+  // Function to fetch ships
+  const fetchShips = async () => {
+    try {
+      const response = await api.get("/getShips");
+      setShips(response.data);
+    } catch (error) {
+      console.error("Error fetching ships:", error);
+    }
+  };
+
+  useEffect(() => {
+    fetchShips();
+  }, []);
+
+
   return (
     <div>
       <main>
@@ -96,15 +114,24 @@ const Dashboard = () => {
           {activeForm === "assign" && (
             <section className="assign-shipment">
               <form onSubmit={handleShipAssignment} method="POST">
-                <label htmlFor="shipName">Ship Name</label>
-                <input
-                  type="text"
-                  placeholder="Enter ship name"
-                  value={shipName}
-                  onChange={(e) => setShipName(e.target.value)}
+                <label htmlFor="shipSelect">Select Ship</label>
+                <select
+                  id="shipSelect"
+                  value={selectedShipId}
+                  onChange={(e) => setSelectedShipId(e.target.value)}
                   required
-                  name="shipName"
-                />
+                >
+                  <option value="">Select a ship</option>
+                  {ships && ships.data?.ships.length > 0 ? (
+                    ships?.data?.ships.map((ship) => (
+                      <option key={ship._id} value={ship._id}>
+                        {ship.shipName}
+                      </option>
+                    ))
+                  ) : (
+                    <option disabled>No ships available</option>
+                  )}
+                </select>
 
                 <div className="form-group">
                   <label htmlFor="startCoordinate">Start Coordinate</label>

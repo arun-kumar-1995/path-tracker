@@ -54,4 +54,15 @@ export const createShipment = async (req, res, next) => {
   }
 };
 
+export const getAllShips = async (req , res , next) => {
+  try {
+    const ships = await Ship.find({})
+      .select("-shipments")
+      .sort({ _id: -1 })
+      .lean();
+    return SendResponse(res, 200, "Here is list of all ships", { ships });
+  } catch (err) {
+    next(err);
+  }
+};
 export const getShipmentDetails = async () => {};
