@@ -31,7 +31,7 @@ export const createShipment = async (req, res, next) => {
     if (!startCoordinate || !endCoordinate)
       return ErrorHandler(res, 400, "Provide start and end coordinates");
 
-    const ship = await Ship.findById(shipId).lena();
+    const ship = await Ship.findById(shipId).lean();
     if (!ship) return ErrorHandler(res, 400, "Ship not found");
 
     const shipment = await Shipment.create({
@@ -41,7 +41,7 @@ export const createShipment = async (req, res, next) => {
       shipmentStatus,
     });
 
-    await Ship.findById(
+    await Ship.findByIdAndUpdate(
       shipId,
       { $addToSet: { shipments: shipment._id } },
       { new: true, upsert: true }

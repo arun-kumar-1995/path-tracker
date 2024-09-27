@@ -4,6 +4,7 @@ const schema = new mongoose.Schema(
     shipName: {
       type: String,
       required: true,
+      lowercase: true,
     },
     shipments: [
       {
