@@ -54,13 +54,40 @@ export const createShipment = async (req, res, next) => {
   }
 };
 
-export const getAllShips = async (req , res , next) => {
+export const getAllShips = async (req, res, next) => {
   try {
     const ships = await Ship.find({})
       .select("-shipments")
       .sort({ _id: -1 })
       .lean();
     return SendResponse(res, 200, "Here is list of all ships", { ships });
+  } catch (err) {
+    next(err);
+  }
+};
+
+export const updateShipmentStatus = async (req, res, next) => {
+  try {
+    const { shipmentId, shipmentStatus, shipmentCompletedDate } = req.body;
+
+    if (!shipmentStatus) {
+      return ErrorHandler(res, 400, "Select shipment status");
+    }
+
+    // Update the shipment status and completion date
+    const shipment = await Shipment.findByIdAndUpdate(
+      shipmentId,
+      {
+        shipmentStatus,
+        shipmentCompletedDate,
+      },
+      { new: true, upsert: true }
+    );
+
+    if (!shipment) {
+      return ErrorHandler(res, 404, "Shipment not found");
+    }
+    return SendResponse(req, 200, "Shipment updated successfully");
   } catch (err) {
     next(err);
   }

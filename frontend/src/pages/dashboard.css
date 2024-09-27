@@ -1,5 +1,5 @@
 header {
-  background-color: #212121;
+  background-color: #2b2929;
 }
 
 .multi-form {
@@ -86,9 +86,9 @@ label {
 .multi-form select {
   display: block;
   width: 100%;
-  padding:0.8rem;
+  padding: 0.8rem;
   font-family: inherit;
-  margin:0.8em 0 1.2em 0;
+  margin: 0.8em 0 1.2em 0;
   outline: 1px solid #007bff;
   border-radius: 0.4rem;
 }

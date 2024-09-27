@@ -1,6 +1,6 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
-import './Header.css'; // Add styles for the header
+import React from "react";
+import { Link } from "react-router-dom";
+import "./Header.css"; // Add styles for the header
 
 const Header = () => {
   return (
@@ -8,8 +8,11 @@ const Header = () => {
       <Link to="/" className="brand-logo">
         S
       </Link>
-      <Link to="/dashboard" className="btn-dashboard">
+      <Link to="/dashboard" className="navbtn">
         Dashboard
+      </Link>
+      <Link to="/track" className="navbtn btn-track">
+        Track
       </Link>
     </header>
   );

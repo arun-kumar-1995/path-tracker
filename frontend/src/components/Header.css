@@ -19,13 +19,21 @@ header .brand-logo {
   text-decoration: none;
   color: #dfa70d;
 }
-header a.btn-dashboard {
+header a.navbtn {
   text-decoration: none;
-  font-size: 1.4rem;
+  font-size: 1.2rem;
   color: #111;
   float: right;
   line-height: 4rem;
   color: #fafafa;
   text-transform: uppercase;
   letter-spacing: 1px;
+}
+
+.btn-track{
+  margin-right: 1em;
+}
+
+header a.navbtn:hover {
+  color:#dfa70d;
 }

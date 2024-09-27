@@ -50,6 +50,9 @@ const schema = new mongoose.Schema(
       ],
       default: "not-assigned",
     },
+    shipmentCompletedDate: {
+      type: Date,
+    },
   },
   { timestamps: true }
 );
