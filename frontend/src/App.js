@@ -1,4 +1,4 @@
-import React from "react";
+import React, { lazy } from "react";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import "./App.css";
 
@@ -10,16 +10,14 @@ import TrackPage from "./pages/Track";
 
 function App() {
   return (
-    <>
-      <Router>
-        <Header />
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/dashboard" element={<Dashboard />} />
-          <Route path="/track/:shipmentId" element={<TrackPage />} />
-        </Routes>
-      </Router>
-    </>
+    <Router>
+      <Header />
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/dashboard" element={<Dashboard />} />
+        <Route path="/track/:shipmentId" element={<TrackPage />} />
+      </Routes>
+    </Router>
   );
 }
 

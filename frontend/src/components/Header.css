@@ -1,8 +1,6 @@
 /* HEADER */
 header {
   padding: 1rem 2%;
-  background-color: antiquewhite;
-  /* background: linear-gradient(135deg, #74ebd5 0%, #acb6e5 100%); */
   background-color: #fafafa;
   width: 100%;
 }
@@ -19,6 +17,7 @@ header .brand-logo {
   line-height: 3.2rem;
   cursor: pointer;
   text-decoration: none;
+  color: #dfa70d;
 }
 header a.btn-dashboard {
   text-decoration: none;
@@ -26,7 +25,7 @@ header a.btn-dashboard {
   color: #111;
   float: right;
   line-height: 4rem;
-  color: #dfa70d;
+  color: #fafafa;
   text-transform: uppercase;
   letter-spacing: 1px;
 }
