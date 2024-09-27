@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import "./dashboard.css";
-import { post } from "../services/api";
+import api from "../services/api";
+import { toast, Toaster } from "react-hot-toast";
 
 const Dashboard = () => {
   // State to manage which form is visible
@@ -10,10 +11,11 @@ const Dashboard = () => {
   const handleOnboard = async (e) => {
     e.preventDefault();
     try {
-      const response = await post("/onboard-ship", { shipName });
-      console.log("Ship Created:", response.data);
+      const response = await api.post("/onboard-ship", { shipName });
+      toast.success(response.data.message);
+      setShipName("");
     } catch (error) {
-      console.error("Error creating ship:", error.message);
+      toast.error(error.response.data.message);
     }
   };
 
@@ -104,6 +106,7 @@ const Dashboard = () => {
           )}
         </div>
       </main>
+      <Toaster />
     </div>
   );
 };

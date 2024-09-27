@@ -6,10 +6,9 @@ import SendResponse from "../utils/responseHandler.js";
 export const onBoardShip = async (req, res, next) => {
   try {
     const { shipName } = req.body;
-    console.log(shipName);
     const ship = await Ship.findOne({ shipName }).lean();
     if (ship)
-      return ErrorHandler(res, 409, `Ship {shipName} already onboarded`);
+      return ErrorHandler(res, 409, `Ship ${shipName} already onboarded`);
     // else create ship
 
     await Ship.create(req.body);
@@ -55,6 +54,4 @@ export const createShipment = async (req, res, next) => {
   }
 };
 
-export const getShipmentDetails = async () => {
-
-};
+export const getShipmentDetails = async () => {};

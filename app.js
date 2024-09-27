@@ -5,6 +5,9 @@ import express from "express";
 const app = express();
 import cors from "cors";
 
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
 // Use CORS middleware
 const corsOptions = {
   origin: process.env.FRONTEND_URL,
