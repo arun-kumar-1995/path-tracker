@@ -4,6 +4,7 @@ import {
   onBoardShip,
   getAllShips,
   getShipmentDetails,
+  updateShipmentStatus,
 } from "../controllers/ship.controller.js";
 const router = express.Router();
 
@@ -12,5 +13,6 @@ router.route("/onboard-ship").post(onBoardShip);
 router.route("/create-shipment").post(createShipment);
 router.route("/getShips").get(getAllShips);
 router.route("/shipment/:id").get(getShipmentDetails);
+router.route("/update-shipment").post(updateShipmentStatus);
 
 export default router;

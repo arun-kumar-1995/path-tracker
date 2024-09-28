@@ -87,7 +87,7 @@ export const updateShipmentStatus = async (req, res, next) => {
     if (!shipment) {
       return ErrorHandler(res, 404, "Shipment not found");
     }
-    return SendResponse(req, 200, "Shipment updated successfully");
+    return SendResponse(res, 200, "Shipment updated successfully");
   } catch (err) {
     next(err);
   }

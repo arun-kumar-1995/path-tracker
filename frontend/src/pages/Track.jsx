@@ -3,28 +3,48 @@ import "./track.css";
 import Map from "../components/Map";
 import { useParams } from "react-router-dom";
 import api from "../services/api";
+import { toast, Toaster } from "react-hot-toast";
+
 const Track = () => {
   const { shipmentid } = useParams();
   const [shipmentData, setShipmentData] = useState(null);
-  const [isAssigned, setIsAssigned] = useState(true);
+  const [isTransit, setIsTransit] = useState(false);
   useEffect(() => {
     const fetchShipmentData = async () => {
       try {
         const response = await api.get(`/shipment/${shipmentid}`);
-        const data = response.data.data;
-        setShipmentData(data);
-        console.log("--------", data);
-        if (data?.status?.toLowerCase() === "assigned") {
-          setIsAssigned(false);
-        } else {
-          setIsAssigned(true);
+        if (response.status === 200) {
+          const data = response.data.data;
+          setShipmentData(data);
+          console.log("--------", data.shipmentDetails.status);
+          if (data?.shipmentDetails?.status.toLowerCase() === "assigned") {
+            setIsTransit(false);
+          } else {
+            setIsTransit(true);
+          }
         }
-      } catch (err) {}
+      } catch (err) {
+        console.log("err", err);
+      }
     };
 
     fetchShipmentData();
   }, [shipmentid]);
 
+  const handleStartShipment = async () => {
+    try {
+      const response = await api.post("/update-shipment", {
+        shipmentId: shipmentid,
+        shipmentStatus: "in-transit",
+      });
+      if (response.status === 200) {
+        setIsTransit(true);
+        toast.success("Shipment started");
+      }
+    } catch (err) {
+      console.log("err", err);
+    }
+  };
   return (
     <div className="tracking-page">
       <div className="tracking-page-controls">
@@ -46,13 +66,19 @@ const Track = () => {
             ></path>
           </svg>
         </button>
-        {isAssigned && (
-          <button className="page-control-btn start-shipment">Start</button>
+        {!isTransit && (
+          <button
+            className="page-control-btn start-shipment"
+            onClick={handleStartShipment}
+          >
+            Start
+          </button>
         )}
       </div>
-      <div className={`map-container ${isAssigned ? "blurred" : ""}`}>
+      <div className={`map-container ${!isTransit ? "blurred" : ""}`}>
         <Map />
       </div>
+      <Toaster />
     </div>
   );
 };
