@@ -11,6 +11,6 @@ const router = express.Router();
 router.route("/onboard-ship").post(onBoardShip);
 router.route("/create-shipment").post(createShipment);
 router.route("/getShips").get(getAllShips);
-router.route("/get-ship/:shipId").get(getShipmentDetails);
+router.route("/shipment/:id").get(getShipmentDetails);
 
 export default router;
