@@ -1,7 +1,19 @@
-import React from "react";
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import "./home.css"; // CSS file for styles
 
 const Home = () => {
+  const [shipmentId, setShipmentId] = useState("");
+  const navigate = useNavigate();
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (shipmentId) {
+      // Navigate to the track page with the shipmentId
+      navigate(`/track/${shipmentId}`);
+    }
+  };
+
   return (
     <div id="home">
       <main className="content-wrapper">
@@ -12,12 +24,14 @@ const Home = () => {
           </p>
 
           <div className="search">
-            <form action="/search-user" className="track-form" method="POST">
+          <form onSubmit={handleSubmit} className="track-form">
               <input
                 type="text"
                 className="search-input"
                 placeholder="Enter shipment ID"
-                name="search-user"
+                value={shipmentId}
+                onChange={(e) => setShipmentId(e.target.value)}
+                required
               />
               <button className="btn btn-search" title="Search">
                 <svg
