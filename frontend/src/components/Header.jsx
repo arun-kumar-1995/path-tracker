@@ -1,6 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import "./Header.css"; // Add styles for the header
+import "./Header.css"; 
 
 const Header = () => {
   return (
@@ -10,9 +10,6 @@ const Header = () => {
       </Link>
       <Link to="/dashboard" className="navbtn">
         Dashboard
-      </Link>
-      <Link to="/track" className="navbtn btn-track">
-        Track
       </Link>
     </header>
   );

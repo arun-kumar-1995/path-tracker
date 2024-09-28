@@ -15,7 +15,7 @@ function App() {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/dashboard" element={<Dashboard />} />
-        <Route path="/track" element={<TrackPage />} />
+        <Route path="/track/:shipmentid" element={<TrackPage />} />
       </Routes>
     </Router>
   );

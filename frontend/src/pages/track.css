@@ -1,0 +1,69 @@
+.tracking-page {
+  position: relative;
+  width: 100%;
+  height: 100vh; 
+}
+
+.tracking-page-controls {
+  position: absolute;
+  top: 20px; 
+  right: 20px; 
+  z-index: 1000; 
+  display: flex;
+  flex-direction: column; 
+  gap: 10px;
+}
+
+.page-control-btn {
+  background-color: #ffffff;
+  border: none;
+  padding: 10px;
+  border-radius: 5px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.page-control-btn:hover {
+  background-color: #f0f0f0;
+}
+
+.btn-download svg {
+  fill: #333;
+}
+
+.start-shipment {
+  background-color: #4caf50;
+  color: white;
+}
+
+.start-shipment:hover {
+  background-color: #45a049;
+}
+
+.map-container {
+  height: 100%;
+  width: 100%;
+  position: relative;
+  transition: filter 0.3s ease;
+}
+
+.blurred {
+  filter: blur(5px);
+  pointer-events: none;
+}
+
+.map-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: transparent;
+  z-index: 999;
+  display: none;
+}
+
+.map-overlay.active {
+  display: block;
+}

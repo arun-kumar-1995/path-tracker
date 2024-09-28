@@ -1,8 +1,8 @@
 /* HEADER */
 header {
   padding: 1rem 2%;
-  background-color: #fafafa;
   width: 100%;
+  border-bottom:1px solid #c3c3c3;
 }
 header .brand-logo {
   font-size: 2.4rem;
@@ -25,15 +25,14 @@ header a.navbtn {
   color: #111;
   float: right;
   line-height: 4rem;
-  color: #fafafa;
   text-transform: uppercase;
   letter-spacing: 1px;
 }
 
-.btn-track{
+.btn-track {
   margin-right: 1em;
 }
 
 header a.navbtn:hover {
-  color:#dfa70d;
+  color: #dfa70d;
 }
