@@ -96,7 +96,7 @@ const Track = () => {
         )}
       </div>
       <Toaster />
-      {<Location /> }
+      {<Location shipmentId={shipmentid} />}
     </div>
   );
 };

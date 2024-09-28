@@ -13,10 +13,7 @@ const Events = {
   RECONNECT_FAILED: "reconnect_failed",
 
   //... Custom Events
-  SEAT_AVAILABLE: "seat-available",
-  BOOK_SEAT: "book-seat",
-  REFETCH_SEAT: "refetch-seat",
-  UPDATE_CLASSROOM: "update-classroom",
+  UPDATE_PATH: "updatePath",
 };
 
 export default Events;

@@ -1,33 +1,48 @@
 import React, { useEffect } from "react";
 import useSocket from "../hooks/useSocket";
-const Location = () => {
+
+const Location = ({ shipmentId }) => {
   const { sendMessage } = useSocket();
 
-  // get current location
+  // Get current location
   const getCurrentLocation = async () => {
-    try {
+    return new Promise((resolve, reject) => {
       if (navigator.geolocation) {
-        const currentCords = await navigator.geolocation.getCurrentPosition();
-        console.log(currentCords);
+        navigator.geolocation.getCurrentPosition(resolve, reject, {
+          enableHighAccuracy: true,
+          timeout: 10000,
+          maximumAge: 0,
+        });
+      } else {
+        reject(new Error("Geolocation is not supported by this browser."));
       }
-    } catch (er) {}
+    });
+  };
+
+  const sendLocationUpdate = async () => {
+    try {
+      const position = await getCurrentLocation();
+      const { latitude, longitude } = position.coords;
+      const socketData = {
+        shipmentId: shipmentId,
+        currentPosition: [latitude, longitude],
+      };
+      sendMessage("updatePath", { socketData });
+      console.log("---location----", latitude, longitude);
+    } catch (err) {
+      // Ask the user to enable location services
+      alert(err.message || "Unable to get current location");
+    }
   };
 
   useEffect(() => {
-    const sendLocationUpdate = async () => {
-      try {
-        await getCurrentLocation();
-      } catch (err) {
-        // ask user to open location
-      }
-    };
-
     // Send location every 30 seconds
-    const intervalId = setInterval(sendLocationUpdate, 30000);
+    const intervalId = setInterval(sendLocationUpdate, 30 * 1000);
 
     // Cleanup interval on unmount
     return () => clearInterval(intervalId);
   }, [sendMessage]);
+
   return null;
 };
 

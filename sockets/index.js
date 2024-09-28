@@ -17,9 +17,6 @@ const InitializeSocketConnection = (expressServer) => {
   socketIo.on(Events.CONNECT, (socket) => {
     console.log("A user connected:", socket.id);
 
-    //assign user to socket so that is available
-    const cookieString = socket.request.headers?.cookie;
-
     // call socket mager ti handle socket connection at one place
     socketManager(socketIo, socket);
 
