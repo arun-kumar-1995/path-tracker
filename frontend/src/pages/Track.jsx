@@ -5,27 +5,25 @@ import { useParams } from "react-router-dom";
 import api from "../services/api";
 const Track = () => {
   const { shipmentid } = useParams();
-  const [shipmentData, setShipmentData] = useState();
-
-  const [start, setStart] = useState(false);
-
-  const handleStartShipment = () => {
-    setStart(!start);
-  };
-
+  const [shipmentData, setShipmentData] = useState(null);
+  const [isAssigned, setIsAssigned] = useState(true);
   useEffect(() => {
     const fetchShipmentData = async () => {
       try {
         const response = await api.get(`/shipment/${shipmentid}`);
-        setShipmentData(response.data.data);
-        console.log(response.data.data);
+        const data = response.data.data;
+        setShipmentData(data);
+        console.log("--------", data);
+        if (data?.status?.toLowerCase() === "assigned") {
+          setIsAssigned(false);
+        } else {
+          setIsAssigned(true);
+        }
       } catch (err) {}
     };
 
     fetchShipmentData();
   }, [shipmentid]);
-
-  console.log(shipmentData);
 
   return (
     <div className="tracking-page">
@@ -48,14 +46,11 @@ const Track = () => {
             ></path>
           </svg>
         </button>
-        <button
-          className="page-control-btn start-shipment"
-          onClick={handleStartShipment}
-        >
-          {start ? "Stop" : "Start"}
-        </button>
+        {isAssigned && (
+          <button className="page-control-btn start-shipment">Start</button>
+        )}
       </div>
-      <div className={`map-container ${start ? "blurred" : ""}`}>
+      <div className={`map-container ${isAssigned ? "blurred" : ""}`}>
         <Map />
       </div>
     </div>
