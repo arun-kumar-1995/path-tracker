@@ -9,7 +9,11 @@ const Track = () => {
   const { shipmentid } = useParams();
   const [shipmentData, setShipmentData] = useState(null);
   const [isTransit, setIsTransit] = useState(false);
+  const [loading, setLoading] = useState(true);
+
   useEffect(() => {
+    setLoading(true);
+
     const fetchShipmentData = async () => {
       try {
         const response = await api.get(`/shipment/${shipmentid}`);
@@ -25,6 +29,8 @@ const Track = () => {
         }
       } catch (err) {
         console.log("err", err);
+      } finally {
+        setLoading(false); // Stop loading
       }
     };
 
@@ -45,6 +51,11 @@ const Track = () => {
       console.log("err", err);
     }
   };
+
+  if (loading) {
+    return <div>Loading...</div>; // Show loading message
+  }
+
   return (
     <div className="tracking-page">
       <div className="tracking-page-controls">
@@ -76,7 +87,12 @@ const Track = () => {
         )}
       </div>
       <div className={`map-container ${!isTransit ? "blurred" : ""}`}>
-        <Map />
+        {shipmentData && (
+          <Map
+            startPosition={shipmentData?.shipmentDetails.startCoordinates}
+            endPosition={shipmentData?.shipmentDetails.endCoordinates}
+          />
+        )}
       </div>
       <Toaster />
     </div>

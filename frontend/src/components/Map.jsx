@@ -24,9 +24,8 @@ const redIcon = new L.Icon({
   shadowSize: [41, 41],
 });
 
-const Map = () => {
-  const startPosition = [51.505, -0.09];
-  const endPosition = [51.49, -0.1];
+const Map = ({ startPosition, endPosition }) => {
+  console.log("Map", startPosition, endPosition);
 
   return (
     <MapContainer
