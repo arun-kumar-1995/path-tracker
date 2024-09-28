@@ -1,13 +1,19 @@
 import Shipment from "../models/shipment.models.js";
 
 export const updateShipmentTrajectory = async (data, callback) => {
+  const { socketData, socket, io } = data;
   try {
-    const { socketData, socket, io } = data;
-    console.log("----DATA---", socketData);
+    console.log("----DATA---", socketData.trajectory);
 
     const shipment = await Shipment.findByIdAndUpdate(
       socketData.shipmentId,
-      { $addToSet: { "trajectory.coordinates": socketData.currentPosition } },
+      {
+        $addToSet: {
+          "trajectory.coordinates": {
+            $each: socketData.trajectory,
+          },
+        },
+      },
       { new: true, upsert: true }
     );
 

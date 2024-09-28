@@ -11,6 +11,7 @@ const Track = () => {
   const [shipmentData, setShipmentData] = useState(null);
   const [isTransit, setIsTransit] = useState(false);
   const [loading, setLoading] = useState(true);
+  const [trajectory, setTrajectory] = useState([]);
 
   useEffect(() => {
     setLoading(true);
@@ -21,17 +22,19 @@ const Track = () => {
         if (response.status === 200) {
           const data = response.data.data;
           setShipmentData(data);
-          console.log("--------", data.shipmentDetails.status);
-          if (data?.shipmentDetails?.status.toLowerCase() === "assigned") {
-            setIsTransit(false);
-          } else {
-            setIsTransit(true);
+          setIsTransit(
+            data?.shipmentDetails?.status.toLowerCase() === "in-transit"
+          );
+
+          // Initialize trajectory with existing path
+          if (data?.shipmentDetails?.path?.length > 0) {
+            setTrajectory(data.shipmentDetails.path);
           }
         }
       } catch (err) {
         console.log("err", err);
       } finally {
-        setLoading(false); // Stop loading
+        setLoading(false);
       }
     };
 
@@ -53,9 +56,15 @@ const Track = () => {
     }
   };
 
+  const handleTrajectoryUpdate = (newPosition) => {
+    setTrajectory((prevTrajectory) => [...prevTrajectory, newPosition]);
+  };
+
   if (loading) {
-    return <div>Loading...</div>; // Show loading message
+    return <div>Loading...</div>;
   }
+
+  console.log(trajectory);
 
   return (
     <div className="tracking-page">
@@ -92,11 +101,18 @@ const Track = () => {
           <Map
             startPosition={shipmentData?.shipmentDetails.startCoordinates}
             endPosition={shipmentData?.shipmentDetails.endCoordinates}
+            trajectory={trajectory}
           />
         )}
       </div>
       <Toaster />
-      {<Location shipmentId={shipmentid} />}
+      {isTransit && (
+        <Location
+          shipmentId={shipmentid}
+          onTrajectoryUpdate={handleTrajectoryUpdate}
+          initialTrajectory={trajectory}
+        />
+      )}
     </div>
   );
 };

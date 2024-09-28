@@ -100,7 +100,7 @@ export const getShipmentDetails = async (req, res, next) => {
       startCoordinates: shipment.startCoordinate.coordinates,
       endCoordinates: shipment.endCoordinate.coordinates,
       status: shipment.shipmentStatus,
-      path: shipment.trajectory,
+      path: shipment.trajectory.coordinates,
     };
     return SendResponse(res, 200, "Here is shipment details", {
       shipmentDetails,
