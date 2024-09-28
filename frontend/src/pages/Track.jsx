@@ -1,14 +1,31 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./track.css";
 import Map from "../components/Map";
-
+import { useParams } from "react-router-dom";
+import api from "../services/api";
 const Track = () => {
-  const [shipmentStatus, setShipmentStatus] = useState();
+  const { shipmentid } = useParams();
+  const [shipmentData, setShipmentData] = useState();
+
   const [start, setStart] = useState(false);
 
   const handleStartShipment = () => {
     setStart(!start);
   };
+
+  useEffect(() => {
+    const fetchShipmentData = async () => {
+      try {
+        const response = await api.get(`/shipment/${shipmentid}`);
+        setShipmentData(response.data.data);
+        console.log(response.data.data);
+      } catch (err) {}
+    };
+
+    fetchShipmentData();
+  }, [shipmentid]);
+
+  console.log(shipmentData);
 
   return (
     <div className="tracking-page">

@@ -92,13 +92,13 @@ export const updateShipmentStatus = async (req, res, next) => {
     next(err);
   }
 };
-export const getShipmentDetails = async () => {
+export const getShipmentDetails = async (req, res, next) => {
   try {
     const shipment = await Shipment.findById(req.params.id).lean();
     if (!shipment) return ErrorHandler(res, 404, "Shipment not found");
     const shipmentDetails = {
-      startCoordinate: shipment.startCoordinate.coordinate,
-      endCoordinate: shipment.endCoordinate.coordinate,
+      startCoordinate: shipment.startCoordinate.coordinates,
+      endCoordinate: shipment.endCoordinate.coordinates,
       status: shipment.shipmentStatus,
       path: shipment.trajectory,
     };
