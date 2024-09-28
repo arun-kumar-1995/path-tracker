@@ -2,10 +2,15 @@ import { Server } from "socket.io";
 import socketManager from "../sockets/socket.manager.js";
 import Events from "../events/eventName.js";
 
-
 const InitializeSocketConnection = (expressServer) => {
   // setting up socket.io
-  const socketIo = new Server(expressServer);
+  const socketIo = new Server(expressServer, {
+    cors: {
+      origin: process.env.FRONTEND_URL,
+      methods: ["GET", "POST", "PUT", "DELETE"],
+      credentials: true,
+    },
+  });
 
   // apply middleware here
 
@@ -14,7 +19,6 @@ const InitializeSocketConnection = (expressServer) => {
 
     //assign user to socket so that is available
     const cookieString = socket.request.headers?.cookie;
-
 
     // call socket mager ti handle socket connection at one place
     socketManager(socketIo, socket);

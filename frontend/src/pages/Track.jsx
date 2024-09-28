@@ -4,6 +4,7 @@ import Map from "../components/Map";
 import { useParams } from "react-router-dom";
 import api from "../services/api";
 import { toast, Toaster } from "react-hot-toast";
+import Location from "../components/Location";
 
 const Track = () => {
   const { shipmentid } = useParams();
@@ -95,6 +96,7 @@ const Track = () => {
         )}
       </div>
       <Toaster />
+      {<Location /> }
     </div>
   );
 };
