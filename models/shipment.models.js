@@ -44,7 +44,7 @@ const schema = new mongoose.Schema(
       enum: [
         "in-transit",
         "completed",
-        "not started",
+        "not-started",
         "assigned",
         "not-assigned",
       ],

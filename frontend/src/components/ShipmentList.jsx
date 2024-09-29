@@ -59,12 +59,29 @@ const ShipmentList = () => {
 
   console.log("---shipments", shipments);
 
+  const handleFilterChange = (value) => {
+    setShipmentStatus(value);
+  };
+
   if (loading) return <div>...loading</div>;
   return (
     <section className="d-section">
       <div className="section-wrapper">
+        <div className="filter-table">
+          <select
+            value={shipmentStatus}
+            onChange={(e) => handleFilterChange(e.target.value)}
+          >
+            <option value="in-transit">In Transit</option>
+            <option value="assigned">Assigned</option>
+            <option value="completed">Completed</option>
+            <option value="not-started">Not Started</option>
+          </select>
+        </div>
+
         <div className="shipment-table-container">
           <h1>Shipment List</h1>
+
           <table className="shipment-table">
             <thead>
               <tr>
@@ -87,10 +104,10 @@ const ShipmentList = () => {
                           handleStatusChange(shipment.id, e.target.value)
                         }
                       >
-                        <option value="In Transit">In Transit</option>
-                        <option value="Delivered">Delivered</option>
-                        <option value="Pending">Pending</option>
-                        <option value="Cancelled">Cancelled</option>
+                        <option value="in-transit">In Transit</option>
+                        <option value="assigned">Assigned</option>
+                        <option value="completed">Completed</option>
+                        <option value="not-started">Not Started</option>
                       </select>
                     </td>
                     <td>

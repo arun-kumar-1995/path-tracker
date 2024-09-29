@@ -80,11 +80,21 @@
   border-radius: 0.4rem;
 }
 
+.filter-table {
+  margin-left: auto;
+  margin-right: 1.6rem;
+}
+
+.filter-table select {
+  width: 120px;
+}
+
 .shipment-table-container {
   margin: 20px;
   overflow-x: auto;
-  width: 968px;
+  max-width: 1200px;
   margin: 0 auto;
+  width: 100%;
 }
 
 .shipment-table-container h1 {
