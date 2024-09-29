@@ -1,10 +1,10 @@
-import React, { useMemo } from "react";
+import React, { useEffect } from "react";
 import {
   MapContainer,
   TileLayer,
   Marker,
-  Popup,
   Polyline,
+  useMap,
 } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import L from "leaflet";
@@ -23,22 +23,25 @@ const createIcon = (color) =>
 // Constants for icon colors
 const blueIcon = createIcon("blue");
 const redIcon = createIcon("red");
+const greenIcon = createIcon("green");
 
 // Constants for the TileLayer URL
 const TILE_LAYER_URL = "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png";
 
-const Map = ({ startPosition, endPosition, trajectory }) => {
-  const validTrajectory = useMemo(
-    () =>
-      trajectory.filter(
-        (point) =>
-          Array.isArray(point) &&
-          point.length === 2 &&
-          point.every((coord) => typeof coord === "number")
-      ),
-    [trajectory]
-  );
+const MapViewUpdater = ({ trajectory }) => {
+  const map = useMap();
 
+  useEffect(() => {
+    if (trajectory.length > 0) {
+      const currentPosition = trajectory[trajectory.length - 1];
+      map.setView(currentPosition, map.getZoom());
+    }
+  }, [trajectory, map]);
+
+  return null;
+};
+
+const Map = ({ startPosition, endPosition, trajectory }) => {
   const dashedStyle = { color: "blue", dashArray: "10, 10", weight: 3 };
 
   return (
@@ -49,17 +52,18 @@ const Map = ({ startPosition, endPosition, trajectory }) => {
     >
       <TileLayer url={TILE_LAYER_URL} />
 
-      <Marker position={startPosition} icon={blueIcon}>
-        <Popup>Start Point</Popup>
-      </Marker>
+      <Marker position={startPosition} icon={blueIcon} />
+      <Marker position={endPosition} icon={redIcon} />
 
-      <Marker position={endPosition} icon={redIcon}>
-        <Popup>End Point</Popup>
-      </Marker>
-
-      {validTrajectory.length > 0 && (
-        <Polyline positions={validTrajectory} pathOptions={dashedStyle} />
+      {trajectory.length > 0 && (
+        <Marker position={trajectory[trajectory.length - 1]} icon={greenIcon} />
       )}
+
+      {trajectory.length > 0 && (
+        <Polyline positions={trajectory} pathOptions={dashedStyle} />
+      )}
+
+      <MapViewUpdater trajectory={trajectory} />
     </MapContainer>
   );
 };

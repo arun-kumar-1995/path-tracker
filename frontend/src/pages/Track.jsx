@@ -1,10 +1,11 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import "./track.css";
 import Map from "../components/Map";
 import { useParams } from "react-router-dom";
 import api from "../services/api";
 import { toast, Toaster } from "react-hot-toast";
 import Location from "../components/Location";
+import useSocket from "../hooks/useSocket";
 
 const Track = () => {
   const { shipmentid } = useParams();
@@ -12,7 +13,35 @@ const Track = () => {
   const [isTransit, setIsTransit] = useState(false);
   const [loading, setLoading] = useState(true);
   const [trajectory, setTrajectory] = useState([]);
+  const { sendMessage } = useSocket();
+  const trajectoryRef = useRef(trajectory);
 
+  // Update the ref whenever the trajectory state changes
+  useEffect(() => {
+    trajectoryRef.current = trajectory;
+  }, [trajectory]);
+
+  // Function to merge trajectories and ensure uniqueness
+  const mergeUniqueTrajectory = (newTrajectory) => {
+    setTrajectory((prevTrajectory) => {
+      const merged = [...prevTrajectory];
+
+      newTrajectory.forEach((point) => {
+        if (
+          !merged.some(
+            (existingPoint) =>
+              existingPoint[0] === point[0] && existingPoint[1] === point[1]
+          )
+        ) {
+          merged.push(point);
+        }
+      });
+
+      return merged;
+    });
+  };
+
+  console.log("'TRACK--- PATH", trajectory);
   useEffect(() => {
     setLoading(true);
 
@@ -22,13 +51,15 @@ const Track = () => {
         if (response.status === 200) {
           const data = response.data.data;
           setShipmentData(data);
-          setIsTransit(
-            data?.shipmentDetails?.status.toLowerCase() === "in-transit"
-          );
+          if (data?.shipmentDetails?.status.toLowerCase() === "assigned") {
+            setIsTransit(false);
+          } else {
+            setIsTransit(true);
+          }
 
-          // Initialize trajectory with existing path
+          // Merge trajectory from API with existing trajectory
           if (data?.shipmentDetails?.path?.length > 0) {
-            setTrajectory(data.shipmentDetails.path);
+            mergeUniqueTrajectory(data.shipmentDetails.path);
           }
         }
       } catch (err) {
@@ -39,6 +70,9 @@ const Track = () => {
     };
 
     fetchShipmentData();
+
+    const intervalId = setInterval(handleSocket, 5 * 60 * 1000);
+    return () => clearInterval(intervalId);
   }, [shipmentid]);
 
   const handleStartShipment = async () => {
@@ -56,14 +90,23 @@ const Track = () => {
     }
   };
 
+  // Callback function to get the trajectory from Location component
   const handleTrajectoryUpdate = (newPosition) => {
-    setTrajectory((prevTrajectory) => [...prevTrajectory, newPosition]);
+    mergeUniqueTrajectory(newPosition);
   };
+
+  function handleSocket() {
+    const socketData = {
+      shipmentId: shipmentid,
+      trajectory: trajectoryRef.current,
+    };
+    console.log("socket data--------", socketData);
+    sendMessage("updatePath", { socketData });
+  }
 
   if (loading) {
     return <div>Loading...</div>;
   }
-
   console.log(trajectory);
 
   return (
@@ -110,7 +153,6 @@ const Track = () => {
         <Location
           shipmentId={shipmentid}
           onTrajectoryUpdate={handleTrajectoryUpdate}
-          initialTrajectory={trajectory}
         />
       )}
     </div>
