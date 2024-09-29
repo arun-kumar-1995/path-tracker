@@ -1,0 +1,33 @@
+.side-nav {
+  background-color: #fff;
+  height: 100vh;
+  position: fixed;
+  display: flex;
+  flex-direction: column;
+  width: 72px;
+  box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+}
+
+.side-nav ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+.side-nav li {
+  display: flex;
+  align-items: center;
+}
+
+.side-nav li a {
+  display: block;
+  width: 100%;
+  text-decoration: none;
+  padding: 1.2rem 1.6rem;
+  font-size: 18px;
+  text-align: center;
+}
+
+.nav-icon {
+  color: #2c3e50;
+  font-size: 22px;
+}
