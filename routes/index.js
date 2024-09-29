@@ -5,6 +5,7 @@ import {
   getAllShips,
   getShipmentDetails,
   updateShipmentStatus,
+  getShipments,
 } from "../controllers/ship.controller.js";
 const router = express.Router();
 
@@ -14,5 +15,6 @@ router.route("/create-shipment").post(createShipment);
 router.route("/getShips").get(getAllShips);
 router.route("/shipment/:id").get(getShipmentDetails);
 router.route("/update-shipment").post(updateShipmentStatus);
+router.route("/shipments").get(getShipments);
 
 export default router;

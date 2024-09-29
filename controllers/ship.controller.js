@@ -109,3 +109,16 @@ export const getShipmentDetails = async (req, res, next) => {
     next(err);
   }
 };
+
+export const getShipments = async (req, res, next) => {
+  const shipmentStatus = req.query;
+  try {
+    const query = {};
+    if (shipmentStatus) query.shipmentStatus = shipmentStatus;
+    const shipments = await Shipment.find(query).lean().sort({ _id: -1 });
+
+    return SendResponse(res, 200, "Here is list of shipments", { shipments });
+  } catch (err) {
+    next(err);
+  }
+};

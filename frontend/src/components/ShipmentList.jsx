@@ -3,6 +3,7 @@ import { FaMapMarkerAlt, FaEye } from "react-icons/fa";
 import api from "../services/api";
 
 const ShipmentList = () => {
+  
   return (
     <section className="d-section">
       <div className="section-wrapper">
