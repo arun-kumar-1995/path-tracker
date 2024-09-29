@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import api from "../services/api";
-import { toast } from "react-hot-toast";
+import toast, { Toaster } from "react-hot-toast";
 
 const OnboardShip = () => {
   const [shipName, setShipName] = useState("");
@@ -34,6 +34,7 @@ const OnboardShip = () => {
           <button type="submit">Submit</button>
         </form>
       </div>
+      <Toaster />
     </section>
   );
 };

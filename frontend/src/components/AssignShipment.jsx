@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import api from "../services/api";
-import { toast } from "react-hot-toast";
+import toast, { Toaster } from "react-hot-toast";
 
 const AssignShipment = () => {
   const [ships, setShips] = useState([]);
@@ -9,6 +9,7 @@ const AssignShipment = () => {
   const [startLongitude, setStartLongitude] = useState("");
   const [endLatitude, setEndLatitude] = useState("");
   const [endLongitude, setEndLongitude] = useState("");
+  const [loading, setIsLoading] = useState(false);
 
   const handleShipAssignment = async (e) => {
     e.preventDefault();
@@ -37,16 +38,26 @@ const AssignShipment = () => {
   // Fetch ships once the component mounts
   useEffect(() => {
     const fetchShips = async () => {
+      setIsLoading(true);
       try {
         const response = await api.get("/getShips");
-        setShips(response.data.ships || []);
+        if (response.status === 200) {
+          setShips(response.data.data || []);
+        } else {
+          toast.error("Error fetching ships");
+        }
       } catch (error) {
         console.error("Error fetching ships:", error);
+      } finally {
+        setIsLoading(false);
       }
     };
     fetchShips();
   }, []);
 
+  if (loading) return <div>loading....</div>;
+  console.log("ships------", ships);
+  console.log("ships------", ships.ships);
   return (
     <section className="assign-shipment d-section">
       <div className="section-wrapper">
@@ -60,8 +71,8 @@ const AssignShipment = () => {
             required
           >
             <option value="">Select a ship</option>
-            {ships.length > 0 ? (
-              ships.map((ship) => (
+            {ships && ships?.ships?.length > 0 ? (
+              ships?.ships.map((ship) => (
                 <option key={ship._id} value={ship._id}>
                   {ship.shipName}
                 </option>
@@ -113,6 +124,7 @@ const AssignShipment = () => {
           <button type="submit">Submit</button>
         </form>
       </div>
+      <Toaster />
     </section>
   );
 };
