@@ -9,7 +9,7 @@ const SideNav = () => {
       <nav>
         <ul>
           <li>
-            <Link to="onboard-ship">
+            <Link to="">
               <FaShip className="nav-icon" title="Onboard Ship" />
             </Link>
           </li>

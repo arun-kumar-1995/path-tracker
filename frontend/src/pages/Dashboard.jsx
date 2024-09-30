@@ -16,7 +16,7 @@ const Dashboard = () => {
       <main>
         <Suspense fallback={<div>Loading...</div>}>
           <Routes>
-            <Route path="onboard-ship" element={<OnboardShip />} />
+            <Route path="" element={<OnboardShip />} />
             <Route path="assign-shipment" element={<AssignShipment />} />
             <Route path="shipment-list" element={<ShipmentList />} />
           </Routes>

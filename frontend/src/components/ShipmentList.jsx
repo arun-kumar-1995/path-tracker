@@ -17,7 +17,7 @@ const ShipmentList = () => {
         );
 
         if (response.status === 200) {
-          const shipmentData = response.data.data || [];
+          const shipmentData = response.data.data?.shipments || [];
           setShipments(shipmentData);
         } else {
           toast.error("Failed to fetch shipments.");
@@ -33,18 +33,19 @@ const ShipmentList = () => {
   }, [shipmentStatus]);
 
   // Handler for status change
-  const handleStatusChange = async (shipmentId, newStatus) => {
+  const handleUpdateShipment = async (shipmentId, newStatus) => {
     try {
       // Make an API call to update the status on the server
-      const response = await api.put(`/shipments/${shipmentId}`, {
-        status: newStatus,
+      const response = await api.put(`/update-shipment`, {
+        shipmentId,
+        shipmentStatus: newStatus,
       });
       if (response.status === 200) {
         // Update local state
         setShipments((prevShipments) =>
           prevShipments.map((shipment) =>
-            shipment.id === shipmentId
-              ? { ...shipment, status: newStatus }
+            shipment._id === shipmentId
+              ? { ...shipment, shipmentStatus: newStatus }
               : shipment
           )
         );
@@ -93,15 +94,15 @@ const ShipmentList = () => {
               </tr>
             </thead>
             <tbody>
-              {shipments && shipments?.shipments.length > 0 ? (
-                shipments?.shipments.map((shipment) => (
+              {shipments && shipments.length > 0 ? (
+                shipments.map((shipment) => (
                   <tr key={shipment._id}>
                     <td>{shipment._id}</td>
                     <td>
                       <select
                         value={shipment.shipmentStatus}
                         onChange={(e) =>
-                          handleStatusChange(shipment.id, e.target.value)
+                          handleUpdateShipment(shipment._id, e.target.value)
                         }
                       >
                         <option value="in-transit">In Transit</option>

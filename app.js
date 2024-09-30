@@ -11,7 +11,7 @@ app.use(express.urlencoded({ extended: true }));
 // Use CORS middleware
 const corsOptions = {
   origin: process.env.FRONTEND_URL,
-  methods: ["GET", "POST", "DELETE"],
+  methods: ["GET", "POST", "DELETE", "PUT"],
   credentials: true,
   allowedHeaders: ["Content-Type", "Authorization"],
 };

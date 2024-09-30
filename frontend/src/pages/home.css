@@ -1,5 +1,5 @@
 #home {
-  height: 100vh;
+  height: 90vh;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -100,7 +100,7 @@ form.track-form {
   margin: 0 auto;
   background-color: #f1f1f1;
 }
-form.track-form  input {
+form.track-form input {
   padding: var(--pd-1-2) var(--pd-1-6);
   font-size: 1.4rem;
   width: 100%;
